@@ -31,7 +31,7 @@ void _formatImpl(String& buf, const char *fmt, const T& current, const Rest ...r
 
 template <typename ...Args>
 String format(Allocator& allocator, const char *fmt, const Args& ...args) {
-	String str(allocator, 64);
+	String str(allocator, 128);
 	
 	_formatImpl(str, fmt, args...);
 	return str;
