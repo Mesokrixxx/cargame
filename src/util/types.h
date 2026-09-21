@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 
 typedef int8_t i8;
 typedef int16_t i16;
@@ -16,6 +17,8 @@ typedef float f32;
 typedef double f64;
 
 namespace types {
+
+constexpr u64 maxAlign = alignof(max_align_t);
 
 template <typename T>
 static constexpr bool trivially_destructible() {

@@ -1,12 +1,11 @@
 #include "assert.h"
+#include "util/log.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 void _assertImpl(SourceLoc loc, bool cond, const char *expr, const char *fmt) {
 	if (cond)
 		return ;
-	fprintf(stderr, "[%s:%d][%s] assertion failed: '%s'\n",
-		loc.file(), loc.line(), loc.func(), expr);
-	fprintf(stderr, "%s\n", fmt);
+	_logImpl(loc, stderr, LOG_COLOR_RED "ERR" LOG_COLOR_RST, "assertion failed: '{}'", expr);
+	_logImpl(loc, stderr, LOG_COLOR_RED "ERR" LOG_COLOR_RST, "{}", fmt);
 	exit(1);
 }

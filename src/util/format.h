@@ -7,8 +7,12 @@ void formatType(String& buf, u32 value);
 void formatType(String& buf, u64 value);
 void formatType(String& buf, const char *cstr);
 void formatType(String& buf, const u8 *cstr);
-template <u64 N> void formatType(String& buf, const char (&cstr)[N]);
 void formatType(String& buf, const String& str);
+
+template <u64 N> 
+void formatType(String& buf, const char (&cstr)[N]) {
+	buf.append(cstr, N - 1);
+}
 
 void _formatImpl(String& buf, const char *fmt);
 

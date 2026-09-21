@@ -9,7 +9,7 @@ LIBS = sdl3 glew
 SRC = src/main.cpp
 SRC += src/container/string.cpp
 SRC += src/memory/allocator.cpp src/memory/mallocator.cpp
-SRC += src/util/error.cpp src/util/assert.cpp src/util/format.cpp
+SRC += src/util/error.cpp src/util/assert.cpp src/util/format.cpp src/util/log.cpp
 
 CXXFLAGS += $(shell pkg-config -cflags $(LIBS))
 LDFLAGS += $(shell pkg-config -libs $(LIBS))

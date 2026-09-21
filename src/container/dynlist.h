@@ -83,6 +83,9 @@ Dynlist<T>& Dynlist<T>::operator=(const Dynlist& other) {
 template <typename T>
 Dynlist<T>& Dynlist<T>::operator=(Dynlist&& other) {
 	if (this != &other) {
+		clear();
+		_allocator.freeMem(_data);
+
 		_size = other._size;
 		_capacity = other._capacity;
 		_data = other._data;

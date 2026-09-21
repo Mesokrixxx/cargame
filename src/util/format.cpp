@@ -34,11 +34,6 @@ void formatType(String& buf, const u8 *cstr) {
 	formatType(buf, (const char *)cstr);
 }
 
-template <u64 N>
-void formatType(String& buf, const char (&cstr)[N]) {
-	buf.append(cstr, N);
-}
-
 void formatType(String& buf, const String& str) {
 	buf.append(str);
 }
