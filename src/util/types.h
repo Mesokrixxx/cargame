@@ -21,12 +21,12 @@ namespace types {
 constexpr u64 maxAlign = alignof(max_align_t);
 
 template <typename T>
-static constexpr bool trivially_destructible() {
+constexpr bool trivially_destructible() {
 	return __is_trivially_destructible(T);
 }
 
 template <typename T>
-static constexpr bool trivially_copyable() {
+constexpr bool trivially_copyable() {
 	return __is_trivially_copyable(T);
 }
 
