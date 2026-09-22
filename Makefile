@@ -7,7 +7,7 @@ LDFLAGS = -g3
 LIBS = sdl3 glew
 
 SRC = src/main.cpp
-SRC += src/engine/window.cpp
+SRC += src/engine/engine.cpp src/engine/renderer.cpp src/engine/window.cpp src/engine/time.cpp
 SRC += src/container/string.cpp
 SRC += src/memory/allocator.cpp src/memory/mallocator.cpp
 SRC += src/util/error.cpp src/util/assert.cpp src/util/format.cpp src/util/log.cpp

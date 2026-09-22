@@ -5,6 +5,8 @@
 void formatType(String& buf, int value);
 void formatType(String& buf, u32 value);
 void formatType(String& buf, u64 value);
+void formatType(String& buf, f32 value);
+void formatType(String& buf, f64 value);
 void formatType(String& buf, const char *cstr);
 void formatType(String& buf, const u8 *cstr);
 void formatType(String& buf, const String& str);

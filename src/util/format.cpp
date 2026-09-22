@@ -22,6 +22,20 @@ void formatType(String& buf, u64 value) {
 	buf.append(tmp, len);
 }
 
+void formatType(String& buf, f32 value) {
+	char tmp[64];
+
+	int len = snprintf(tmp, sizeof(tmp), "%ff", value);
+	buf.append(tmp, len);
+}
+
+void formatType(String& buf, f64 value) {
+	char tmp[64];
+
+	int len = snprintf(tmp, sizeof(tmp), "%f", value);
+	buf.append(tmp, len);
+}
+
 void formatType(String& buf, const char *cstr) {
 	if (!cstr) {
 		formatType(buf, "(null)");

@@ -1,35 +1,32 @@
-#include "engine/window.h"
+#include "engine/engine.h"
 #include "util/error.h"
-#include "util/assert.h"
 #include "util/log.h"
-#include <SDL3/SDL.h>
-#include <GL/glew.h>
+
+static void init(Engine& engine) {
+	engine.renderer().setBackgroundColor(1, 1, 1, 1);
+}
+
+static void update(Engine&) {
+}
+
+static void tick(Engine&) {
+}
+
+static void render(Engine& engine) {
+	Renderer& renderer = engine.renderer();
+
+	renderer.frameBegin();
+	renderer.frameEnd();
+}
 
 int main() {
-	Window window;
+	Engine engine(init, update, tick, render, nullptr);
 	
-	ASSERT(SDL_Init(SDL_INIT_VIDEO), 
-		"failed to init sdl: {}", SDL_GetError());
-	
-	ASSERT(window.create("Car Game"), 
-		"failed to create window: {}", error::get());
+	if (!engine.init("Car Game")) {
+		ERROR("failed to init engine: {}", error::get());
+		return 1;
+	} 
 
-	u32 glewErr = glewInit();
-	ASSERT(glewErr == GLEW_OK || glewErr == GLEW_ERROR_NO_GLX_DISPLAY, 
-		"failed to init glew: {} | error code: {}",
-		glewGetErrorString(glewErr), glewErr);
-
-	bool running = true;
-	while (running) {
-		SDL_Event ev;
-		while (SDL_PollEvent(&ev)) {
-			if (ev.type == SDL_EVENT_QUIT)
-				running = false;
-		}
-		window.clear();
-		window.flush();
-	}
-
-	SDL_Quit();
+	engine.launch();
 	return 0;
 }
