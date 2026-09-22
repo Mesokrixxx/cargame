@@ -30,6 +30,13 @@ void _formatImpl(String& buf, const char *fmt, const T& current, const Rest ...r
 }
 
 template <typename ...Args>
+String& format(String& buf, const char *fmt, const Args& ...args) {	
+	buf.clear();
+	_formatImpl(buf, fmt, args...);
+	return buf;
+}
+
+template <typename ...Args>
 String format(Allocator& allocator, const char *fmt, const Args& ...args) {
 	String str(allocator, 128);
 	

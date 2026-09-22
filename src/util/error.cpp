@@ -1,17 +1,25 @@
 #include "error.h"
-#include <string.h>
+#include "util/format.h"
 #include <errno.h>
 
-const char *msg = nullptr;
+String msg(512);
 
 const char *error::get() {
-	return msg;
+	return msg.cstr();
 }
 
-void error::set(const char *errMsg) {
-	msg = errMsg;
+void error::set(const char *cstr) {
+	msg = cstr;
 }
 
-void error::setViaErrno() {
-	msg = strerror(errno);
+void error::set(const String& str) {
+	msg = str;
+}
+
+void error::set(String&& str) {
+	msg = (String&&)str;
+}
+
+void error::setViaErrno(const char *post) {
+	format(msg, "{}{}{}", post ? post : "", post ? ": " : "", strerror(errno));
 }

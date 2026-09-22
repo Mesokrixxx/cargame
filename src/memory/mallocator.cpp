@@ -19,8 +19,10 @@ void *Mallocator::_allocMemImpl(u64 size) {
 		ptr->size = size;
 		_reserved += ptr->size;
 	}
-	else
-		error::setViaErrno();
+	else {
+		error::setViaErrno("malloc");
+		return nullptr;
+	}
 	return (u8 *)ptr + headerSize();
 }
 

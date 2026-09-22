@@ -32,6 +32,9 @@ public:
 	Dynlist(const Dynlist& other)
 		: Dynlist(other._allocator, other.data(), other.size()) {}
 	
+	template <u64 N> Dynlist& operator=(const T (&data)[N]) 
+		{ set(data, N); return *this; }
+
 	T& operator[](u64 i) { return data()[i]; }
 	const T& operator[](u64 i) const { return data()[i]; }
 
@@ -40,6 +43,7 @@ public:
 	
 	virtual void set(const T *data, u64 n);
 	void set(const Dynlist& other) { set(other.data(), other.size()); }
+	void set(Dynlist&& other) { Dynlist<T>::operator=((Dynlist&&)other); }
 	template <u64 N> void set(const T (&data)[N]) { set(data, N); }
 	
 	virtual void pushback(const T *data, u64 n);
@@ -62,6 +66,8 @@ private:
 	u64 _size = 0;
 	u64 _capacity = 0;
 	T *_data = nullptr;
+
+	void _destroyInternal();
 };
 
 template <typename T>
@@ -75,7 +81,7 @@ Dynlist<T>::Dynlist(Dynlist&& other)
 template <typename T>
 Dynlist<T>& Dynlist<T>::operator=(const Dynlist& other) {
 	if (this != &other) {
-		set(other.data(), other.size());
+		set(other);
 	}
 	return *this;
 }
@@ -83,24 +89,25 @@ Dynlist<T>& Dynlist<T>::operator=(const Dynlist& other) {
 template <typename T>
 Dynlist<T>& Dynlist<T>::operator=(Dynlist&& other) {
 	if (this != &other) {
-		clear();
-		_allocator.freeMem(_data);
+		if (&_allocator == &other._allocator) {
+			_destroyInternal();
+			_size = other._size;
+			_capacity = other._capacity;
+			_data = other._data;
 
-		_size = other._size;
-		_capacity = other._capacity;
-		_data = other._data;
-
-		other._size = 0;
-		other._capacity = 0;
-		other._data = nullptr;
+			other._size = 0;
+			other._capacity = 0;
+			other._data = nullptr;
+		}
+		else
+			set(other);
 	}
 	return *this;
 }
 
 template <typename T>
 Dynlist<T>::~Dynlist() {
-	clear();
-	_allocator.freeMem(_data);
+	_destroyInternal();
 }
 
 template <typename T>
@@ -164,4 +171,12 @@ void Dynlist<T>::_copyDataImpl(T *dst, const T *src, u64 n) {
 	}
 	else
 		memcpy(dst, src, sizeof(T) * n);
+}
+
+template <typename T>
+void Dynlist<T>::_destroyInternal() {
+	clear();
+	_allocator.freeMem(_data);
+	_data = nullptr;
+	_capacity = 0;
 }
